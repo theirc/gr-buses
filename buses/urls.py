@@ -22,7 +22,7 @@ import buses_api.urls
 admin.autodiscover()
 
 urlpatterns = [
-                  url(r'^admin/', include(admin.site.urls)),
-                  url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-                  url(r'^', include(buses_api.urls, namespace='api')),
+                  url(r'^buses/admin/', include(admin.site.urls)),
+                  url(r'^buses/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+                  url(r'^buses/', include(buses_api.urls, namespace='api')),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
