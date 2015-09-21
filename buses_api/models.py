@@ -13,6 +13,7 @@ class BusTripInstance(models.Model):
                                                   verbose_name=_("Estimated Time Of Arrival"))
     actual_time_arrival = models.DateTimeField(null=True, blank=True, verbose_name=_("Estimated Time Of Arrival"))
 
+
 class SmsReceiver(models.Model):
     destination = models.PositiveIntegerField(blank=True, null=True, choices=(
         (1, 'Kara Tepe'),
@@ -21,3 +22,15 @@ class SmsReceiver(models.Model):
         (4, 'Port'),
     ))
     phone_number = models.CharField(max_length=50, blank=True, null=True)
+
+
+class DriverInformation(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True, )
+
+
+class BusInformation(models.Model):
+    license_plate = models.CharField(max_length=100, null=True, blank=True, )
+
+
+class PurchaseRequestInformation(models.Model):
+    identifier = models.CharField(max_length=100, null=True, blank=True, )

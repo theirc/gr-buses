@@ -1,3 +1,4 @@
 buses/local_settings.py
 *.pyc
 db.sqlite3
+.idea

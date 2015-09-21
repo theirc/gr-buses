@@ -27,14 +27,16 @@ def import_from_kobo(request):
         "kara_tepe": 1,
         "moria": 2,
         "pikpa": 3,
-        "Port_Mytilini": 4
+        "port_mytilini": 4
     }
 
     for d in data:
         exists = models.BusTripInstance.objects.filter(kobo_id=d['_uuid']).count()
         if not exists:
             models.BusTripInstance.objects.create(kobo_id=d['_uuid'], kobo_data=text)
-            for c in models.SmsReceiver.objects.filter(destination=destination_dictionary[d['Destination']]):
+            destinations = [destination_dictionary[c] for c in d['Destination'].split(' ')]
+
+            for c in models.SmsReceiver.objects.filter(destination__in=destinations):
                 twilio.messages.create(from_="IRC", to=c.phone_number,
                                        body="A bus has been dispatched to your location.")
     return HttpResponse('')
