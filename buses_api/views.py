@@ -8,6 +8,7 @@ import requests
 from . import models
 import ujson as json
 from twilio.rest import TwilioRestClient
+import dateutil.parser
 
 
 def import_from_kobo(request):
@@ -32,13 +33,22 @@ def import_from_kobo(request):
         "port_mytilini": 4
     }
 
+    destination_friendly = {
+        1: "Kara Tepe",
+        2: "Moria",
+        3: "Pikpa",
+        4: "the Port",
+    }
+
     for d in data:
         exists = models.BusTripInstance.objects.filter(kobo_id=d['_uuid']).count()
         if not exists:
             models.BusTripInstance.objects.create(kobo_id=d['_uuid'], kobo_data=text)
             destinations = [destination_dictionary[c] for c in d['Destination'].split(' ')]
+            sent_on = dateutil.parser.parse(d['_submission_time']).strftime("%H:%M:%S")
 
             for c in models.SmsReceiver.objects.filter(destination__in=destinations):
                 twilio.messages.create(from_="IRC", to=c.phone_number,
-                                       body="A bus has been dispatched to your location.")
+                                       body="A bus has been dispatched to {} at {}."
+                                       .format(destination_friendly[c.destination], sent_on))
     return HttpResponse('')
