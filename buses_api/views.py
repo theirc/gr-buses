@@ -45,11 +45,11 @@ def import_from_kobo(request):
         if not exists:
             models.BusTripInstance.objects.create(kobo_id=d['_uuid'], kobo_data=text)
             destinations = [destination_dictionary[c] for c in d['Destination'].split(' ')]
-            sent_on = dateutil.parser.parse(d['_submission_time']).strftime("%H:%M:%S")
+            sent_on = dateutil.parser.parse(d['_submission_time'])
             sent_on = sent_on + timedelta(hours=3)
 
             for c in models.SmsReceiver.objects.filter(destination__in=destinations):
                 twilio.messages.create(from_="IRC", to=c.phone_number,
                                        body="A bus has been dispatched to {} at {}."
-                                       .format(destination_friendly[c.destination], sent_on))
+                                       .format(destination_friendly[c.destination], sent_on).strftime("%H:%M:%S"))
     return HttpResponse('')
