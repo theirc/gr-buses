@@ -9,7 +9,7 @@ from . import models
 import ujson as json
 from twilio.rest import TwilioRestClient
 import dateutil.parser
-
+from datetime import datetime, timedelta
 
 def import_from_kobo(request):
     kobo_url = getattr(settings, "KOBO_BASE_URL", "https://kc.humanitarianresponse.info/api/v1/data/")
@@ -46,6 +46,7 @@ def import_from_kobo(request):
             models.BusTripInstance.objects.create(kobo_id=d['_uuid'], kobo_data=text)
             destinations = [destination_dictionary[c] for c in d['Destination'].split(' ')]
             sent_on = dateutil.parser.parse(d['_submission_time']).strftime("%H:%M:%S")
+            sent_on = sent_on + timedelta(hours=3)
 
             for c in models.SmsReceiver.objects.filter(destination__in=destinations):
                 twilio.messages.create(from_="IRC", to=c.phone_number,
