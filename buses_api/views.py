@@ -18,6 +18,8 @@ def import_from_kobo(request):
 
     twilio = TwilioRestClient(account=settings.TWILIO_ACCOUNT_SID, token=settings.TWILIO_AUTH_TOKEN)
 
+    print ("Requesting {}{}".format(kobo_url, kobo_form_id))
+
     request = requests.get("{}{}".format(kobo_url, kobo_form_id), headers={"Accept": "application/json"},
                            auth=(kobo_username, kobo_password))
 
