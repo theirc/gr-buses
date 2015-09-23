@@ -53,4 +53,8 @@ def import_from_kobo(request):
                 twilio.messages.create(from_="IRC", to=c.phone_number,
                                        body="A bus has been dispatched to {} at {}."
                                        .format(destination_friendly[c.destination], sent_on.strftime("%H:%M:%S")))
+
+                if d['Are_there_any_vulnerable_cases'] == 'yes':
+                    twilio.messages.create(from_="IRC", to=c.phone_number,
+                                           body=d['vulnerable_case_description'])
     return HttpResponse('')
