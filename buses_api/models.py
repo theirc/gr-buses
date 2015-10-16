@@ -5,6 +5,13 @@ __author__ = 'reyrodrigues'
 from django.db import models
 from django.utils.translation import ugettext as _
 
+DESTINATION_CHOICES = (
+    (1, 'Kara Tepe'),
+    (2, 'Moria'),
+    (3, 'Pikpa'),
+    (4, 'Port'),
+)
+
 
 class BusTripInstance(models.Model):
     kobo_id = models.CharField(max_length=60, null=True, blank=True, verbose_name=_("Kobo Instance Id"))
@@ -15,13 +22,10 @@ class BusTripInstance(models.Model):
 
 
 class SmsReceiver(models.Model):
-    destination = models.PositiveIntegerField(blank=True, null=True, choices=(
-        (1, 'Kara Tepe'),
-        (2, 'Moria'),
-        (3, 'Pikpa'),
-        (4, 'Port'),
-    ))
+    destination = models.PositiveIntegerField(blank=True, null=True, choices=DESTINATION_CHOICES)
     phone_number = models.CharField(max_length=50, blank=True, null=True)
+    receive_case_information = models.BooleanField(default=True,
+                                                   verbose_name=_('Will this person receive case information?'))
 
 
 class DriverInformation(models.Model):
