@@ -26,6 +26,7 @@ class SmsReceiver(models.Model):
     phone_number = models.CharField(max_length=50, blank=True, null=True)
     receive_case_information = models.BooleanField(default=True,
                                                    verbose_name=_('Will this person receive case information?'))
+    enabled = models.BooleanField(default=True)
 
 
 class DriverInformation(models.Model):
