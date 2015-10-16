@@ -8,7 +8,7 @@ from .models import BusTripInstance, SmsReceiver, DriverInformation, PurchaseReq
 
 
 class SmsReceiverAdmin(admin.ModelAdmin):
-    list_display = ('destination', 'phone_number', 'receive_case_information')
+    list_display = ('destination', 'phone_number', 'receive_case_information', 'enabled')
 
 admin.site.register(BusTripInstance)
 admin.site.register(SmsReceiver,SmsReceiverAdmin)
